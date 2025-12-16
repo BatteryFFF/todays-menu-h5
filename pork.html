@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- 字体：Kite One（可选） -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Kite+One&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* ------------ 全局 reset（简单版） ------------ */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+
+      body {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center; /* 横向居中画布 */
+        align-items: flex-start; /* 顶部对齐 */
+        background: #000; /* 外面背景，你可以换 */
+        font-family: "Kite One", sans-serif;
+      }
+
+      /* ------------ 猪肉页画布 ------------ */
+      .pork-menu,
+      .pork-menu * {
+        box-sizing: border-box;
+      }
+
+      .pork-menu {
+        background: #f7dec0;
+        height: 956px;
+        width: 440px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .pork-title {
+        width: 453px;
+        height: 280.05px;
+        position: absolute;
+        left: -40.36px;
+        top: 328.21px;
+        transform-origin: 0 0;
+        transform: rotate(-14.013deg) scale(1, 1);
+      }
+
+      .pork-title-1 {
+        width: 421px;
+        height: 365px;
+        position: absolute;
+        left: 72.17px;
+        top: -70px;
+        transform-origin: 0 0;
+        transform: rotate(14.013deg) scale(1, 1);
+        object-fit: cover;
+        aspect-ratio: 421 / 365;
+      }
+
+      .pork {
+        width: 420px;
+        height: 295px;
+        position: absolute;
+        left: 18px;
+        top: 253px;
+        object-fit: cover;
+        aspect-ratio: 420 / 295;
+      }
+
+      .button-next {
+        position: absolute;
+        width: 93px;
+        height: 48px;
+        left: 308px; /* 跟上一页一致 */
+        top: 859px;
+        z-index: 50;
+      }
+
+      .button-next-1 {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        object-fit: cover;
+        aspect-ratio: 93 / 48;
+      }
+
+      /* ------------ frame-38（箭头+标签） ------------ */
+      .frame-38,
+      .frame-38 * {
+        box-sizing: border-box;
+      }
+
+      .frame-38 {
+        height: 799px;
+        position: relative;
+        opacity: 0;
+        animation: porkLabelsFadeIn 1.2s ease-out forwards;
+        animation-delay: 0.4s;
+        z-index: 10;
+      }
+
+      /* 公共：标签里的 SVG 填满白框 */
+      .frame-label {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: contain;
+        pointer-events: none; /* ✅ 点击落在外层 tag 上 */
+      }
+
+      /* ✅ 交互：可点菜项 */
+      .tag {
+        cursor: pointer;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+        position: absolute; /* 你这些 frame 本来就是 absolute，保险起见 */
+      }
+
+      /* ✅ 不用 transform 做选中态（避免“位置乱飞”），用伪元素做阴影 */
+      .tag::after {
+        content: "";
+        position: absolute;
+        inset: 0px; /* 阴影范围 */
+        border-radius: 0px;
+        opacity: 0;
+        pointer-events: none;
+        box-shadow: 0 2px 0 rgba(128, 127, 127, 0.35);
+        transition: opacity 140ms ease;
+      }
+
+      .tag.selected::after {
+        opacity: 1;
+      }
+
+      /* ✅ 按下反馈：轻微缩放（不会影响 absolute 定位） */
+      .tag:active {
+        transform: scale(0.98);
+      }
+
+      /* 箭头 */
+      .vector-55 {
+        width: 48px;
+        height: 30px;
+        position: absolute;
+        left: 198px;
+        top: 544.92px;
+        transform: translate(8.98px, -18.48px);
+        overflow: visible;
+        pointer-events: none;
+      }
+      .vector-56 {
+        width: 24.24px;
+        height: 32px;
+        position: absolute;
+        left: 358.75px;
+        top: 539.74px;
+        transform: translate(-1.45px, -24.93px);
+        overflow: visible;
+        pointer-events: none;
+      }
+      .vector-52 {
+        width: 53px;
+        height: 111px;
+        position: absolute;
+        left: 80px;
+        top: 107px;
+        overflow: visible;
+        pointer-events: none;
+      }
+      .vector-53 {
+        width: 80px;
+        height: 84px;
+        position: absolute;
+        left: 361.24px;
+        top: 152.39px;
+        transform: translate(-50px, -0.64px);
+        overflow: visible;
+        pointer-events: none;
+      }
+
+      .frame-1,
+      .frame-2,
+      .frame-3,
+      .frame-4,
+      .frame-5,
+      .frame-6,
+      .frame-7,
+      .frame-8,
+      .frame-9,
+      .frame-10,
+      .frame-11,
+      .frame-12 {
+        background: transparent;
+        border: none;
+        overflow: visible;
+      }
+
+      /* 你原来的定位/尺寸（不改） */
+      .frame-1 {
+        width: 127px;
+        height: 40px;
+        left: calc(50% - 174.5px);
+        top: calc(50% - 364.5px);
+      }
+      .frame-3 {
+        width: 122px;
+        height: 40px;
+        left: calc(50% - -80.5px);
+        top: calc(50% - 313.5px);
+      }
+      .frame-7 {
+        width: 66px;
+        height: 40px;
+        left: calc(50% - 167.5px);
+        top: calc(50% - -248.5px);
+      }
+      .frame-4 {
+        width: 92px;
+        height: 37px;
+        left: calc(50% - 73.5px);
+        top: calc(50% - -165.5px);
+      }
+      .frame-8 {
+        width: 113px;
+        height: 40px;
+        left: calc(50% - 185.5px);
+        top: calc(50% - -359.5px);
+      }
+
+      .vector-57 {
+        width: 118.08px;
+        height: 273.89px;
+        position: absolute;
+        left: 40.88px;
+        top: 479.42px;
+        transform: translate(23.78px, -13.27px);
+        overflow: visible;
+        pointer-events: none;
+      }
+      .vector-59 {
+        width: 128px;
+        height: 272px;
+        position: absolute;
+        left: 237px;
+        top: 457px;
+        overflow: visible;
+        pointer-events: none;
+      }
+
+      .frame-9 {
+        width: 113px;
+        height: 40px;
+        left: calc(50% - 31.5px);
+        top: calc(50% - -240.5px);
+      }
+      .frame-10 {
+        width: 113px;
+        height: 40px;
+        left: calc(50% - 20.5px);
+        top: calc(50% - -315.5px);
+      }
+      .frame-5 {
+        width: 97px;
+        height: 40px;
+        left: calc(50% - 208.5px);
+        top: calc(50% - -148.5px);
+      }
+      .frame-11 {
+        width: 97px;
+        height: 40px;
+        left: calc(50% - -107.5px);
+        top: calc(50% - -275.5px);
+      }
+      .frame-12 {
+        width: 97px;
+        height: 40px;
+        left: calc(50% - 5.5px);
+        top: calc(50% - 399.5px);
+      }
+      .frame-6 {
+        width: 141px;
+        height: 40px;
+        left: calc(50% - -67.5px);
+        top: calc(50% - -148.5px);
+      }
+      .frame-2 {
+        width: 83px;
+        height: 40px;
+        left: calc(50% - 47.5px);
+        top: calc(50% - 243.5px);
+      }
+
+      .vector-54 {
+        width: 34.5px;
+        height: 29px;
+        position: absolute;
+        left: 50.5px;
+        top: 512px;
+        overflow: visible;
+        pointer-events: none;
+      }
+      .vector-60 {
+        width: 70.17px;
+        height: 369.11px;
+        position: absolute;
+        left: 231.58px;
+        top: 49.22px;
+        transform: translate(-1.31px, -2.1px);
+        overflow: visible;
+        pointer-events: none;
+      }
+
+      @keyframes porkLabelsFadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="pork-menu">
+      <!-- NEXT 按钮 -->
+      <a href="chicken.html" class="button-next">
+        <img class="button-next-1" src="images_2/button-next.png" alt="Next" />
+      </a>
+
+      <!-- 猪标题 -->
+      <div class="pork-title">
+        <img
+          class="pork-title-1"
+          src="images_3/pork_title.png"
+          alt="Pork title"
+        />
+      </div>
+
+      <!-- 猪插画 -->
+      <img class="pork" src="images_3/pork.png" alt="Pork" />
+
+      <!-- 箭头 & 标签（整组淡入） -->
+      <div class="frame-38">
+        <img class="vector-55" src="images_3/Vector 55.svg" alt="" />
+        <img class="vector-56" src="images_3/Vector 56.svg" alt="" />
+        <img class="vector-52" src="images_3/Vector 52.svg" alt="" />
+        <img class="vector-53" src="images_3/Vector 53.svg" alt="" />
+
+        <!-- ✅ 每个标签：加 class="tag" + data-value（从 alt 同步也行） -->
+        <div class="frame-1 tag" data-value="凉拌猪耳朵">
+          <img
+            class="frame-label"
+            src="images_3/Frame 1.svg"
+            alt="凉拌猪耳朵"
+          />
+        </div>
+
+        <div class="frame-3 tag" data-value="辣炒猪耳朵">
+          <img
+            class="frame-label"
+            src="images_3/Frame 3.svg"
+            alt="辣炒猪耳朵"
+          />
+        </div>
+
+        <img class="vector-57" src="images_3/Vector 57.svg" alt="" />
+
+        <div class="frame-7 tag" data-value="扣肉">
+          <img class="frame-label" src="images_3/Frame 7.svg" alt="扣肉" />
+        </div>
+
+        <div class="frame-4 tag" data-value="卤猪蹄">
+          <img class="frame-label" src="images_3/Frame 4.svg" alt="卤猪蹄" />
+        </div>
+
+        <div class="frame-8 tag" data-value="话梅红烧肉">
+          <img
+            class="frame-label"
+            src="images_3/Frame 8.svg"
+            alt="话梅红烧肉"
+          />
+        </div>
+
+        <img class="vector-59" src="images_3/Vector 59.svg" alt="" />
+
+        <div class="frame-9 tag" data-value="豆豉蒸排骨">
+          <img
+            class="frame-label"
+            src="images_3/Frame 9.svg"
+            alt="豆豉蒸排骨"
+          />
+        </div>
+
+        <div class="frame-10 tag" data-value="芋头蒸排骨">
+          <img
+            class="frame-label"
+            src="images_3/Frame 10.svg"
+            alt="芋头蒸排骨"
+          />
+        </div>
+
+        <div class="frame-5 tag" data-value="香辣猪蹄">
+          <img class="frame-label" src="images_3/Frame 5.svg" alt="香辣猪蹄" />
+        </div>
+
+        <div class="frame-11 tag" data-value="肉饼蒸蛋">
+          <img class="frame-label" src="images_3/Frame 11.svg" alt="肉饼蒸蛋" />
+        </div>
+
+        <div class="frame-12 tag" data-value="爆炒肥肠">
+          <img class="frame-label" src="images_3/Frame 12.svg" alt="爆炒肥肠" />
+        </div>
+
+        <div class="frame-6 tag" data-value="酸萝卜蹄花汤">
+          <img
+            class="frame-label"
+            src="images_3/Frame 6.svg"
+            alt="酸萝卜蹄花汤"
+          />
+        </div>
+
+        <div class="frame-2 tag" data-value="卤猪耳">
+          <img class="frame-label" src="images_3/Frame 2.svg" alt="卤猪耳" />
+        </div>
+
+        <img class="vector-54" src="images_3/Vector 54.svg" alt="" />
+        <img class="vector-60" src="images_3/Vector 60.svg" alt="" />
+      </div>
+    </div>
+
+    <script>
+      // ✅ 本页存储 key（每一页都换一个）
+      const PAGE_KEY = "todaymenu_pork";
+
+      // 读：多选数组
+      function loadSelected() {
+        try {
+          const raw = localStorage.getItem(PAGE_KEY);
+          const arr = raw ? JSON.parse(raw) : [];
+          return Array.isArray(arr) ? arr : [];
+        } catch {
+          return [];
+        }
+      }
+
+      // 写：多选数组
+      function saveSelected(arr) {
+        localStorage.setItem(PAGE_KEY, JSON.stringify(arr));
+      }
+
+      // 初始化：恢复选中态
+      const selected = new Set(loadSelected());
+
+      document.querySelectorAll(".tag").forEach((tag) => {
+        const value =
+          tag.dataset.value ||
+          tag.querySelector("img")?.getAttribute("alt") ||
+          "";
+
+        tag.dataset.value = value; // ✅ 兜底写回，防止以后漏写 data-value
+
+        if (selected.has(value)) {
+          tag.classList.add("selected");
+        }
+
+        tag.addEventListener("click", () => {
+          if (!value) return;
+
+          // toggle
+          if (selected.has(value)) {
+            selected.delete(value);
+            tag.classList.remove("selected");
+          } else {
+            selected.add(value);
+            tag.classList.add("selected");
+          }
+
+          saveSelected(Array.from(selected));
+        });
+      });
+    </script>
+  </body>
+</html>

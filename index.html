@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- 字体：Kite One -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Kite+One&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- 你原来的样式 -->
+    <link rel="stylesheet" href="./vars.css" />
+    <link rel="stylesheet" href="./style.css" />
+
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+
+      button,
+      input,
+      select {
+        border: none;
+        background: none;
+        font: inherit;
+      }
+
+      menu,
+      ol,
+      ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Kite One", sans-serif;
+      }
+
+      .fay-s,
+      .welcome,
+      .dinner,
+      .meal {
+        font-family: "Kite One", sans-serif;
+      }
+
+      .h5-wrapper {
+        width: 440px;
+        height: 956px;
+        margin: 0 auto;
+        position: relative;
+        overflow: hidden;
+        background: #fff;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        background: #00000000;
+      }
+
+      .h5-wrapper {
+        width: 440px;
+        height: 956px;
+        transform-origin: top center;
+      }
+
+      @media screen and (max-height: 956px) {
+        .h5-wrapper {
+          transform: scale(calc(100vh / 956));
+        }
+      }
+
+      /* =========================================================
+         ✅ 新增：炒菜动效（锅轻微摇晃 + 物件上下弹）
+         不依赖具体 left/top，不会破坏你原来的排版
+         ========================================================= */
+
+      /* 1) 不让装饰动效抢点击 */
+      .background,
+      .pot-1,
+      .pot-1 *,
+      .pot-2,
+      .pot-2 *,
+      .title,
+      .title * {
+        pointer-events: none;
+      }
+
+      /* 2) 但按钮区域要能点 */
+      .button,
+      .button * {
+        pointer-events: auto;
+      }
+
+      /* 3) 锅整体“颠勺”摇晃：轻微旋转 + 平移 */
+      .pot-2 {
+        transform-origin: 55% 72%;
+        will-change: transform;
+        animation: wokToss 1.15s ease-in-out infinite;
+      }
+
+      @keyframes wokToss {
+        0% {
+          transform: translate(0, 0) rotate(0deg);
+        }
+        18% {
+          transform: translate(-2px, 1px) rotate(-1.2deg);
+        }
+        40% {
+          transform: translate(2px, -2px) rotate(1.3deg);
+        }
+        60% {
+          transform: translate(-1px, -3px) rotate(-0.8deg);
+        }
+        78% {
+          transform: translate(2px, 0px) rotate(0.9deg);
+        }
+        100% {
+          transform: translate(0, 0) rotate(0deg);
+        }
+      }
+
+      /* 4) 锅里那一层“内容”再叠一层轻微上下抛（更像锅内翻动） */
+      .pot-2 .frame-39 {
+        transform-origin: 50% 65%;
+        will-change: transform;
+        animation: wokInnerLift 1.15s ease-in-out infinite;
+      }
+
+      @keyframes wokInnerLift {
+        0% {
+          transform: translateY(0);
+        }
+        25% {
+          transform: translateY(1px);
+        }
+        50% {
+          transform: translateY(-4px);
+        }
+        72% {
+          transform: translateY(-1px);
+        }
+        100% {
+          transform: translateY(0);
+        }
+      }
+
+      /* 5) 小物件：分别弹跳（错开相位，避免整齐得像 loading） */
+      .pot-2 .frame-39 .div3, /* mushroom */
+      .pot-2 .frame-39 .div4, /* cabagge */
+      .pot-2 .frame-39 .div5, /* mushroom2 */
+      .pot-2 .frame-39 .div6  /* smallthings */ {
+        will-change: transform;
+      }
+
+      .pot-2 .frame-39 .div3 {
+        animation: tossUp 1.15s ease-in-out infinite;
+        animation-delay: 0ms;
+      }
+      .pot-2 .frame-39 .div4 {
+        animation: tossUp 1.15s ease-in-out infinite;
+        animation-delay: 90ms;
+      }
+      .pot-2 .frame-39 .div5 {
+        animation: tossUp 1.15s ease-in-out infinite;
+        animation-delay: 160ms;
+      }
+      .pot-2 .frame-39 .div6 {
+        animation: tossUpSmall 1.15s ease-in-out infinite;
+        animation-delay: 120ms;
+      }
+
+      @keyframes tossUp {
+        0% {
+          transform: translateY(0) rotate(0deg);
+        }
+        28% {
+          transform: translateY(2px) rotate(-1deg);
+        }
+        55% {
+          transform: translateY(-8px) rotate(2deg);
+        }
+        78% {
+          transform: translateY(-2px) rotate(-1deg);
+        }
+        100% {
+          transform: translateY(0) rotate(0deg);
+        }
+      }
+
+      /* smallthings 弹得更小一点，避免画面太乱 */
+      @keyframes tossUpSmall {
+        0% {
+          transform: translateY(0);
+        }
+        30% {
+          transform: translateY(1px);
+        }
+        55% {
+          transform: translateY(-5px);
+        }
+        80% {
+          transform: translateY(-1px);
+        }
+        100% {
+          transform: translateY(0);
+        }
+      }
+      /* =========================================================
+   ✅ 新增：pot-1「煮东西」动效（咕嘟咕嘟 + 蒸汽）
+   只加在 pot-1，不会影响 pot-2 的炒菜动效
+   ========================================================= */
+
+      /* 1) 锅本体：非常轻微的上下“呼吸” */
+      .pot-1 {
+        transform-origin: 50% 90%;
+        will-change: transform;
+        animation: simmerBob 2s ease-in-out infinite;
+      }
+
+      /* 2) 锅里食材：慢慢漂浮（每个错开一点点） */
+      .pot-1 .div9,   /* eggplant */
+.pot-1 .div10,  /* tomato */
+.pot-1 .div11,  /* small */
+.pot-1 .div8 {
+        /* color */
+        will-change: transform;
+        transform-origin: 50% 80%;
+      }
+
+      .pot-1 .div9 {
+        animation: simmerFloat 1s ease-in-out infinite;
+        animation-delay: 0ms;
+      }
+      .pot-1 .div10 {
+        animation: simmerFloat 2.2s ease-in-out infinite;
+        animation-delay: 180ms;
+      }
+      .pot-1 .div11 {
+        animation: simmerFloatSmall 1.8s ease-in-out infinite;
+        animation-delay: 90ms;
+      }
+      .pot-1 .div8 {
+        animation: simmerPulse 2.6s ease-in-out infinite;
+        animation-delay: 120ms;
+      }
+
+      /* 3) 蒸汽泡泡（CSS 画出来，不需要图片）
+   注意：pot-1 必须是可定位容器；如果你外部 CSS 没给 pot-1 position，
+   下面这行会自动兜底成 relative（不会改变你绝对定位的 left/top）
+*/
+      .pot-1 {
+        position: absolute;
+      }
+      .pot-1::before,
+      .pot-1::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 35px; /* 蒸汽起点：你可以上下微调 */
+        width: 12px;
+        height: 12px;
+        border-radius: 999px;
+        pointer-events: none;
+        opacity: 0;
+        background: radial-gradient(
+          circle at 30% 30%,
+          rgba(255, 255, 255, 0.95),
+          rgba(255, 255, 255, 0)
+        );
+        filter: blur(0.2px);
+        will-change: transform, opacity;
+      }
+
+      /* 一次冒多个泡：用 box-shadow 复制 2-3 个 */
+      .pot-1::before {
+        box-shadow: -26px 18px 0 rgba(255, 255, 255, 0),
+          18px 28px 0 rgba(255, 255, 255, 0), 38px 10px 0 rgba(255, 255, 255, 0);
+        animation: steamRiseA 2.4s ease-in-out infinite;
+      }
+
+      .pot-1::after {
+        width: 10px;
+        height: 10px;
+        box-shadow: -18px 24px 0 rgba(255, 255, 255, 0),
+          10px 34px 0 rgba(255, 255, 255, 0), 30px 18px 0 rgba(255, 255, 255, 0);
+        animation: steamRiseB 2.4s ease-in-out infinite;
+        animation-delay: 1.2s;
+      }
+
+      /* ===== keyframes ===== */
+
+      @keyframes simmerBob {
+        0% {
+          transform: translateY(0);
+        }
+        35% {
+          transform: translateY(1px);
+        }
+        60% {
+          transform: translateY(-2px);
+        }
+        100% {
+          transform: translateY(0);
+        }
+      }
+
+      /* 食材慢慢浮动：像在汤里漂 */
+      @keyframes simmerFloat {
+        0% {
+          transform: translateY(0) rotate(0deg);
+        }
+        40% {
+          transform: translateY(-3px) rotate(0.6deg);
+        }
+        70% {
+          transform: translateY(-1px) rotate(-0.4deg);
+        }
+        100% {
+          transform: translateY(0) rotate(0deg);
+        }
+      }
+
+      @keyframes simmerFloatSmall {
+        0% {
+          transform: translateY(0);
+        }
+        45% {
+          transform: translateY(-2px);
+        }
+        75% {
+          transform: translateY(-1px);
+        }
+        100% {
+          transform: translateY(0);
+        }
+      }
+
+      /* 锅里颜色层轻微呼吸：像热气在翻 */
+      @keyframes simmerPulse {
+        0% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        50% {
+          transform: scale(1.01);
+          opacity: 0.98;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      /* 蒸汽：上升 + 左右飘 + 渐隐 */
+      @keyframes steamRiseA {
+        0% {
+          transform: translate(-50%, 0) scale(0.9);
+          opacity: 0;
+        }
+        15% {
+          opacity: 0.55;
+        }
+        55% {
+          transform: translate(calc(-50% - 10px), -32px) scale(1.2);
+          opacity: 0.35;
+        }
+        100% {
+          transform: translate(calc(-50% - 18px), -56px) scale(1.35);
+          opacity: 0;
+        }
+      }
+
+      @keyframes steamRiseB {
+        0% {
+          transform: translate(-50%, 0) scale(0.9);
+          opacity: 0;
+        }
+        15% {
+          opacity: 0.5;
+        }
+        55% {
+          transform: translate(calc(-50% + 8px), -30px) scale(1.15);
+          opacity: 0.3;
+        }
+        100% {
+          transform: translate(calc(-50% + 16px), -54px) scale(1.3);
+          opacity: 0;
+        }
+      }
+    </style>
+
+    <title>Document</title>
+  </head>
+
+  <body>
+    <div class="h5-wrapper">
+      <div class="div">
+        <img class="background" src="images/background.png" />
+
+        <div class="pot-2">
+          <img class="div2" src="images/pot2.svg" />
+          <div class="frame-39">
+            <img class="rectangle-2" src="images/Rectangle2.svg" />
+            <img class="union" src="images/Union.svg" />
+            <img class="div3" src="images/mushroom.svg" />
+            <img class="div4" src="images/cabagge.svg" />
+            <img class="div5" src="images/mushroom2.svg" />
+            <img class="div6" src="images/smallthings.svg" />
+          </div>
+        </div>
+
+        <div class="pot-1">
+          <img class="div7" src="images/pot1.svg" />
+          <img class="div8" src="images/color.svg" />
+          <img class="div9" src="images/eggplant.svg" />
+          <img class="div10" src="images/tomato.svg" />
+          <img class="div11" src="images/small.svg" />
+        </div>
+
+        <div class="button">
+          <div class="title-fays">
+            <div class="rectangle-7"></div>
+            <div class="fay-s">FAY’S</div>
+          </div>
+
+          <a href="beef.html" class="button-welcome">
+            <div class="rectangle-8"></div>
+            <div class="welcome">WELCOME&gt;</div>
+          </a>
+
+          <div class="title-dinner">
+            <div class="rectangle-10"></div>
+            <div class="dinner">DINNER</div>
+          </div>
+
+          <div class="title-meal">
+            <div class="rectangle-11"></div>
+            <div class="meal">MEAL</div>
+          </div>
+
+          <div class="title">
+            <img class="titile-union-1" src="images/titile_Union1.png" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

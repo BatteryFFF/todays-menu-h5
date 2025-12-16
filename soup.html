@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+      }
+
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        background: #000;
+      }
+
+      .soup,
+      .soup * {
+        box-sizing: border-box;
+      }
+      .soup {
+        background: #fdfae9;
+        width: 440px;
+        height: 956px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .order {
+        width: 116px;
+        height: 48px;
+        position: absolute;
+        left: 295px;
+        top: 860px;
+        object-fit: cover;
+        aspect-ratio: 116/48;
+        z-index: 10;
+        cursor: pointer;
+      }
+
+      .enter {
+        background: #ffffff;
+        border: 1px solid #000;
+        width: 170px;
+        height: 40px;
+        position: absolute;
+        left: 136px;
+        top: 783px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9;
+      }
+
+      .enter .result-text {
+        font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC",
+          "Microsoft YaHei", sans-serif;
+        font-size: 18px;
+        line-height: 1;
+        color: #000;
+        white-space: nowrap;
+        transform: translateY(1px);
+      }
+
+      .title {
+        width: 418px;
+        height: 366.5px;
+        position: absolute;
+        left: 3px;
+        top: 116px;
+        object-fit: cover;
+        aspect-ratio: 418/366.5;
+        z-index: 2;
+        pointer-events: none;
+      }
+
+      .or-img {
+        width: 25px;
+        height: auto;
+        position: absolute;
+        left: 212px;
+        top: 90px;
+        z-index: 8;
+        pointer-events: none;
+        object-fit: contain;
+      }
+
+      .pot {
+        width: 463.21px;
+        height: 466.91px;
+        position: absolute;
+        left: 0px;
+        top: 96px;
+        z-index: 1;
+      }
+      .real-pot {
+        width: 408.95px;
+        height: 266.57px;
+        position: absolute;
+        left: 16.57px;
+        top: 193.34px;
+        overflow: visible;
+      }
+      .small-things {
+        width: 308.07px;
+        height: 241.4px;
+        position: absolute;
+        left: 67px;
+        top: 33.36px;
+        overflow: visible;
+      }
+
+      .union-2 {
+        width: 115.38px;
+        height: 114.14px;
+        position: absolute;
+        left: 164px;
+        top: 405px;
+        overflow: visible;
+        z-index: 5;
+        pointer-events: none;
+      }
+
+      .union-1 {
+        width: 116px;
+        height: 48.99px;
+        position: absolute;
+        left: 163.5px;
+        top: 697.5px;
+        overflow: visible;
+        z-index: 10;
+        cursor: pointer;
+      }
+
+      .frame-28,
+      .frame-29,
+      .frame-30,
+      .frame-31,
+      .frame-32,
+      .frame-33,
+      .frame-34,
+      .frame-35,
+      .frame-36 {
+        background: transparent;
+        border: none;
+        overflow: visible;
+        position: absolute;
+        z-index: 10;
+        cursor: pointer;
+        user-select: none;
+      }
+
+      .frame-28 {
+        width: 78px;
+        height: 40px;
+        left: calc(50% - 138px);
+        top: calc(50% - 403px);
+      }
+      .frame-29 {
+        width: 59px;
+        height: 40px;
+        left: calc(50% - -79px);
+        top: calc(50% - 403px);
+      }
+      .frame-30 {
+        width: 59px;
+        height: 40px;
+        left: calc(50% - 71px);
+        top: calc(50% - -78px);
+      }
+      .frame-34 {
+        width: 59px;
+        height: 40px;
+        left: calc(50% - 153px);
+        top: calc(50% - -78px);
+      }
+      .frame-35 {
+        width: 59px;
+        height: 40px;
+        left: calc(50% - 123px);
+        top: calc(50% - -136px);
+      }
+      .frame-36 {
+        width: 59px;
+        height: 40px;
+        left: 50%;
+        transform: translateX(-50%);
+        top: calc(50% - -136px);
+      }
+      .frame-31 {
+        width: 59px;
+        height: 40px;
+        left: calc(50% - -11px);
+        top: calc(50% - -78px);
+      }
+      .frame-32 {
+        width: 59px;
+        height: 40px;
+        left: calc(50% - -93px);
+        top: calc(50% - -78px);
+      }
+      .frame-33 {
+        width: 59px;
+        height: 40px;
+        left: calc(50% - -65px);
+        top: calc(50% - -136px);
+      }
+
+      .label-svg {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: contain;
+        pointer-events: none;
+      }
+
+      .tag {
+        -webkit-tap-highlight-color: transparent;
+        transition: transform 120ms ease, filter 120ms ease;
+      }
+
+      .tag.selected {
+        transform: translateY(-2px);
+        filter: drop-shadow(0 2px 0 rgba(156, 153, 153, 0.25));
+      }
+
+      .tag:not(.selected):active {
+        transform: translateY(1px);
+        filter: drop-shadow(0 0px 0 rgba(173, 171, 171, 0.22));
+      }
+
+      .tag.selected:active {
+        transform: translateY(-1px);
+        filter: drop-shadow(0 2px 0 rgba(0, 0, 0, 0.28));
+      }
+
+      .fly-clone {
+        position: fixed;
+        z-index: 9999;
+        pointer-events: none;
+        will-change: transform, opacity;
+      }
+
+      @keyframes popIn {
+        from {
+          transform: scale(0.92);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+      .enter.flash {
+        animation: popIn 0.25s ease-out;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="soup" id="soupRoot">
+      <div class="enter" id="enterBox">
+        <div class="result-text" id="resultText"></div>
+      </div>
+
+      <div class="frame-28 tag" data-type="base" data-value="排骨汤">
+        <img class="label-svg" src="images_7/Frame 28.svg" alt="排骨汤" />
+      </div>
+      <div class="frame-29 tag" data-type="base" data-value="鸡汤">
+        <img class="label-svg" src="images_7/Frame 29.svg" alt="鸡汤" />
+      </div>
+
+      <div class="frame-34 tag" data-type="addon" data-value="莲藕">
+        <img class="label-svg" src="images_7/Frame 34.svg" alt="莲藕" />
+      </div>
+      <div class="frame-30 tag" data-type="addon" data-value="山药">
+        <img class="label-svg" src="images_7/Frame 30.svg" alt="山药" />
+      </div>
+      <div class="frame-31 tag" data-type="addon" data-value="冬瓜">
+        <img class="label-svg" src="images_7/Frame 31.svg" alt="冬瓜" />
+      </div>
+      <div class="frame-32 tag" data-type="addon" data-value="萝卜">
+        <img class="label-svg" src="images_7/Frame 32.svg" alt="萝卜" />
+      </div>
+      <div class="frame-35 tag" data-type="addon" data-value="竹笋">
+        <img class="label-svg" src="images_7/Frame 35.svg" alt="竹笋" />
+      </div>
+      <div class="frame-36 tag" data-type="addon" data-value="香菇">
+        <img class="label-svg" src="images_7/Frame 36.svg" alt="香菇" />
+      </div>
+      <div class="frame-33 tag" data-type="addon" data-value="玉米">
+        <img class="label-svg" src="images_7/Frame 33.svg" alt="玉米" />
+      </div>
+
+      <a href="todaymenu.html" class="order-link">
+        <img class="order" src="images_7/NEXT.png" alt="order" />
+      </a>
+
+      <img class="title" src="images_7/title.png" alt="title" />
+      <img class="or-img" src="images_7/or.svg" alt="or" />
+
+      <div class="pot" id="pot">
+        <img class="real-pot" src="images_7/real_pot.svg" alt="pot" />
+        <img
+          class="small-things"
+          src="images_7/small things.svg"
+          alt="things"
+        />
+      </div>
+
+      <img class="union-2" id="gpsTarget" src="images_7/Union.svg" alt="gps" />
+
+      <img
+        class="union-1"
+        id="equalBtn"
+        src="images_7/Union-1.svg"
+        alt="equal"
+      />
+    </div>
+
+    <script>
+      const root = document.getElementById("soupRoot");
+      const gpsTarget = document.getElementById("gpsTarget");
+      const equalBtn = document.getElementById("equalBtn");
+      const enterBox = document.getElementById("enterBox");
+      const resultText = document.getElementById("resultText");
+
+      // ✅ 本页存储（可选：方便你回到这页还能看到上次的选择）
+      const PAGE_KEY = "todaymenu_soup";
+      // ✅ 总菜单顺序（最后一页读取这个）
+      const ORDER_KEY = "todaymenu_order";
+
+      let selectedBase = null;
+      const selectedAddons = new Set();
+
+      function readJson(key, fallback) {
+        try {
+          const v = localStorage.getItem(key);
+          return v ? JSON.parse(v) : fallback;
+        } catch (e) {
+          return fallback;
+        }
+      }
+      function writeJson(key, value) {
+        localStorage.setItem(key, JSON.stringify(value));
+      }
+
+      function getGpsCenter() {
+        const r = gpsTarget.getBoundingClientRect();
+        return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+      }
+
+      function throwIntoPot(tagEl) {
+        const srcRect = tagEl.getBoundingClientRect();
+        const gps = getGpsCenter();
+
+        const clone = tagEl.cloneNode(true);
+        clone.classList.add("fly-clone");
+        clone.style.width = srcRect.width + "px";
+        clone.style.height = srcRect.height + "px";
+        clone.style.left = srcRect.left + "px";
+        clone.style.top = srcRect.top + "px";
+        clone.style.transform = "rotate(60deg) scale(1)";
+        clone.style.opacity = "1";
+
+        document.body.appendChild(clone);
+
+        const dx = gps.x - (srcRect.left + srcRect.width / 2);
+        const dy = gps.y - (srcRect.top + srcRect.height / 2);
+
+        requestAnimationFrame(() => {
+          clone.style.transition =
+            "transform 650ms cubic-bezier(.2,.9,.2,1), opacity 1000ms ease";
+          clone.style.transform = `translate(${dx}px, ${dy}px) rotate(60deg) scale(0.15)`;
+          clone.style.opacity = "0.15";
+        });
+
+        setTimeout(() => clone.remove(), 700);
+      }
+
+      function buildSoupName() {
+        if (!selectedBase) return "";
+        const addons = Array.from(selectedAddons);
+        return `${addons.join("")}${selectedBase}`;
+      }
+
+      // ✅ 写入“总菜单”：去重 & 保持顺序
+      function addToGlobalOrder(name) {
+        if (!name) return;
+
+        const order = readJson(ORDER_KEY, []);
+        if (!order.includes(name)) {
+          order.push(name);
+          writeJson(ORDER_KEY, order);
+        }
+      }
+
+      // ✅ 本页也存一下（方便恢复）
+      function saveSoupState(latestName) {
+        writeJson(PAGE_KEY, {
+          base: selectedBase,
+          addons: Array.from(selectedAddons),
+          latestName: latestName || "",
+          updatedAt: Date.now(),
+        });
+      }
+
+      // ✅ 页面加载：恢复本页状态（可选，但很实用）
+      (function restore() {
+        const saved = readJson(PAGE_KEY, null);
+        if (!saved) return;
+
+        if (saved.base) {
+          selectedBase = saved.base;
+          root.querySelectorAll('.tag[data-type="base"]').forEach((el) => {
+            if (el.dataset.value === selectedBase) el.classList.add("selected");
+          });
+        }
+
+        if (Array.isArray(saved.addons)) {
+          saved.addons.forEach((a) => selectedAddons.add(a));
+          root.querySelectorAll('.tag[data-type="addon"]').forEach((el) => {
+            if (selectedAddons.has(el.dataset.value))
+              el.classList.add("selected");
+          });
+        }
+
+        if (saved.latestName) {
+          resultText.textContent = saved.latestName;
+        }
+      })();
+
+      function onTagClick(tagEl) {
+        const type = tagEl.dataset.type;
+        const value = tagEl.dataset.value;
+
+        if (type === "base") {
+          if (selectedBase === value) {
+            selectedBase = null;
+            tagEl.classList.remove("selected");
+            saveSoupState(buildSoupName());
+            return;
+          }
+
+          root.querySelectorAll('.tag[data-type="base"]').forEach((el) => {
+            el.classList.remove("selected");
+          });
+
+          selectedBase = value;
+          tagEl.classList.add("selected");
+          throwIntoPot(tagEl);
+
+          saveSoupState(buildSoupName());
+          return;
+        }
+
+        if (type === "addon") {
+          if (selectedAddons.has(value)) {
+            selectedAddons.delete(value);
+            tagEl.classList.remove("selected");
+          } else {
+            selectedAddons.add(value);
+            tagEl.classList.add("selected");
+            throwIntoPot(tagEl);
+          }
+
+          saveSoupState(buildSoupName());
+        }
+      }
+
+      root.querySelectorAll(".tag").forEach((tagEl) => {
+        tagEl.addEventListener("click", () => onTagClick(tagEl));
+      });
+
+      // ✅ 关键：按 "=" 生成后，立刻写入总菜单
+      equalBtn.addEventListener("click", () => {
+        const name = buildSoupName();
+
+        if (!name) {
+          resultText.textContent = "请先选汤底";
+        } else {
+          resultText.textContent = name;
+
+          // ✅ 记录到总菜单
+          addToGlobalOrder(name);
+
+          // ✅ 本页也存一下（让回到这页还能看到）
+          saveSoupState(name);
+        }
+
+        enterBox.classList.remove("flash");
+        void enterBox.offsetWidth;
+        enterBox.classList.add("flash");
+      });
+    </script>
+  </body>
+</html>

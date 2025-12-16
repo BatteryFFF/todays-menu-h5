@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Today Menu</title>
+
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+      }
+
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        background: #000;
+      }
+
+      /* ===== 页面容器 ===== */
+      .menu,
+      .menu * {
+        box-sizing: border-box;
+      }
+
+      .menu {
+        background: #eceaea;
+        width: 440px;
+        height: 956px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* ===== 背景字（todaysmenu0.svg）先出现 + 一直抖 ===== */
+      .todaysmenu {
+        width: 427.4px;
+        height: 851.97px;
+        position: absolute;
+        left: 4px;
+        top: 52px;
+        overflow: visible;
+
+        opacity: 0;
+        transform: translateY(8px);
+        animation: bgIn 500ms ease-out forwards,
+          bgWiggle 1600ms ease-in-out 1000ms infinite;
+        transform-origin: center;
+        pointer-events: none;
+      }
+
+      @keyframes bgIn {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* 可爱左右抖：轻微旋转 + 左右位移 */
+      @keyframes bgWiggle {
+        0% {
+          transform: translateX(0) rotate(0deg);
+        }
+        20% {
+          transform: translateX(-2px) rotate(-0.6deg);
+        }
+        50% {
+          transform: translateX(2px) rotate(0.6deg);
+        }
+        80% {
+          transform: translateX(-1px) rotate(-0.3deg);
+        }
+        100% {
+          transform: translateX(0) rotate(0deg);
+        }
+      }
+
+      /* ===== 菜名出现区域（矩形框） ===== */
+      .rectangle-27 {
+        width: 318px;
+        height: 783px;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        translate: -50% -50%;
+
+        /* 你要的话可以开边框查看范围 */
+        /* outline: 1px dashed rgba(0, 0, 0, 0.15); */
+        z-index: 5;
+      }
+
+      /* ===== 菜名样式 ===== */
+      .dish {
+        position: absolute;
+
+        font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC",
+          "Microsoft YaHei", sans-serif;
+        font-size: 20px;
+        line-height: 1;
+        color: #000;
+
+        background: #ffffff;
+        border: 1px solid #000000;
+        padding: 10px 14px;
+
+        white-space: nowrap;
+        user-select: none;
+
+        opacity: 0;
+        transform: translateY(6px);
+        transition: opacity 260ms ease, transform 260ms ease;
+      }
+
+      .dish.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* （可选）轻微阴影让贴纸更立体 */
+      .dish {
+        filter: drop-shadow(0 2px 0 rgba(0, 0, 0, 0.12));
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="menu">
+      <img class="todaysmenu" src="image_8/todaysmenu.svg" alt="today menu" />
+      <div class="rectangle-27" id="menuArea"></div>
+    </div>
+
+    <script>
+      // ✅ 全局顺序 key：你前面几页已经在写这个
+      const ORDER_KEY = "todaymenu_order";
+
+      const area = document.getElementById("menuArea");
+
+      function readJson(key, fallback) {
+        try {
+          const v = localStorage.getItem(key);
+          return v ? JSON.parse(v) : fallback;
+        } catch (e) {
+          return fallback;
+        }
+      }
+
+      function sleep(ms) {
+        return new Promise((r) => setTimeout(r, ms));
+      }
+
+      // ✅ 平均垂直距离分布：纵向分成 N 个槽位，每个槽位放一个菜名
+      function placeDish(el, index, total) {
+        area.appendChild(el);
+
+        const areaW = area.clientWidth;
+        const areaH = area.clientHeight;
+
+        const ew = el.offsetWidth;
+        const eh = el.offsetHeight;
+
+        // 1) 平均纵向位置（每个菜一个“横向带”）
+        const slotHeight = areaH / (total + 1);
+        const baseY = slotHeight * (index + 1);
+
+        // 2) 纵向微随机（避免太机械）
+        const yJitter = (Math.random() - 0.5) * 16; // ±8px
+        const y = Math.min(areaH - eh, Math.max(0, baseY - eh / 2 + yJitter));
+
+        // 3) 横向随机（在矩形内随机）
+        const x = Math.random() * Math.max(0, areaW - ew);
+
+        el.style.left = `${x}px`;
+        el.style.top = `${y}px`;
+      }
+
+      async function run() {
+        // 等背景字先出现一下，再开始出菜名
+        await sleep(750);
+
+        let order = readJson(ORDER_KEY, []);
+        // 清洗一下：去空、去重复（防止你某一页重复 push）
+        const seen = new Set();
+        order = order
+          .map((x) => String(x ?? "").trim())
+          .filter((x) => x && !seen.has(x) && seen.add(x));
+
+        if (!order.length) {
+          const hint = document.createElement("div");
+          hint.className = "dish show";
+          hint.textContent = "（还没有选择菜品）";
+          placeDish(hint, 0, 1);
+          return;
+        }
+
+        for (let i = 0; i < order.length; i++) {
+          const dish = document.createElement("div");
+          dish.className = "dish";
+          dish.textContent = order[i];
+
+          placeDish(dish, i, order.length);
+
+          await sleep(180);
+          dish.classList.add("show");
+          await sleep(220);
+        }
+      }
+
+      // ✅ 确保布局尺寸已经就绪（避免 0 宽高导致位置错）
+      window.addEventListener("load", run);
+    </script>
+  </body>
+</html>

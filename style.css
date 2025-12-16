@@ -1,0 +1,281 @@
+.div,
+.div * {
+  box-sizing: border-box;
+}
+.div {
+  background: #fcfef0;
+  height: 956px;
+  position: relative;
+  overflow: hidden;
+}
+.background {
+  width: 443px;
+  height: 971px;
+  position: absolute;
+  left: 0px;
+  top: -4px;
+  object-fit: cover;
+  aspect-ratio: 443/971;
+}
+.pot-2 {
+  width: 460.87px;
+  height: 314px;
+  position: absolute;
+  left: -27.13px;
+  top: 574.74px;
+}
+.div2 {
+  width: 440.98px;
+  height: 224.91px;
+  position: absolute;
+  left: 16.87px;
+  top: 56.65px;
+  transform: translate(10.26px, 0px);
+  overflow: visible;
+}
+.frame-39 {
+  width: 330.22px;
+  height: 257.96px;
+  position: absolute;
+  left: 2.84px;
+  top: 9.04px;
+}
+.rectangle-2 {
+  width: 90.26px;
+  height: 140.53px;
+  position: absolute;
+  left: 54.92px;
+  top: 34.16px;
+  transform: translate(6.6px, -18.1px);
+  overflow: visible;
+}
+.union {
+  width: 48.64px;
+  height: 43.57px;
+  position: absolute;
+  left: 278.57px;
+  top: 69.58px;
+  transform: translate(-1.18px, 1.48px);
+  overflow: visible;
+}
+.div3 {
+  width: 317.08px;
+  height: 187.1px;
+  position: absolute;
+  left: 14.03px;
+  top: 47.61px;
+  transform: translate(10.26px, 0px);
+  overflow: visible;
+}
+.div4 {
+  width: 317.08px;
+  height: 187.1px;
+  position: absolute;
+  left: 14.03px;
+  top: 47.61px;
+  transform: translate(10.26px, 0px);
+  overflow: visible;
+}
+.div5 {
+  width: 62.33px;
+  height: 49.89px;
+  position: absolute;
+  left: 168.63px;
+  top: 128.02px;
+  transform: translate(-3.74px, 0px);
+  overflow: visible;
+}
+.div6 {
+  width: 247.87px;
+  height: 196.31px;
+  position: absolute;
+  left: 70.7px;
+  top: 6.14px;
+  transform: translate(-46.41px, 0px);
+  overflow: visible;
+}
+.pot-1 {
+  width: 426.9px;
+  height: 339.34px;
+  position: absolute;
+  left: 50.22px;
+  top: 76px;
+}
+.div7 {
+  width: 426.9px;
+  height: 265.19px;
+  position: absolute;
+  left: 0px;
+  top: 74.14px;
+  overflow: visible;
+}
+.div8 {
+  width: 221.5px;
+  height: 134.95px;
+  position: absolute;
+  left: 63.05px;
+  top: 0px;
+  overflow: visible;
+}
+.div9 {
+  width: 300.04px;
+  height: 137.35px;
+  position: absolute;
+  left: 49.6px;
+  top: 74.14px;
+  overflow: visible;
+}
+.div10 {
+  width: 300.04px;
+  height: 137.35px;
+  position: absolute;
+  left: 49.6px;
+  top: 74.14px;
+  overflow: visible;
+}
+.div11 {
+  width: 322.37px;
+  height: 182.53px;
+  position: absolute;
+  left: 42.33px;
+  top: 2.8px;
+  overflow: visible;
+}
+.button {
+  width: 391px;
+  height: 872px;
+  position: absolute;
+  left: 23px;
+  top: 31px;
+}
+.title-fays {
+  width: 95px;
+  height: 48px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+.rectangle-7 {
+  background: #ffffff;
+  border-style: solid;
+  border-color: #000000;
+  border-width: 1px;
+  width: 95px;
+  height: 48px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+.fay-s {
+  color: #000000;
+  text-align: left;
+  font-family: "KiteOne-Regular", sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  position: absolute;
+  left: 15px;
+  top: 10px;
+}
+.button-welcome {
+  width: 153px;
+  height: 48px;
+  position: absolute;
+  left: 238px;
+  top: 824px;
+}
+.rectangle-8 {
+  background: #ffffff;
+  border-style: solid;
+  border-color: #000000;
+  border-width: 1px;
+  width: 153px;
+  height: 48px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+.welcome {
+  color: #000000;
+  text-align: left;
+  font-family: "KiteOne-Regular", sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  position: absolute;
+  left: 12px;
+  top: 7px;
+  width: 137px;
+}
+.title-dinner {
+  width: 139px;
+  height: 31px;
+  position: absolute;
+  left: 48px;
+  top: 307px;
+}
+.rectangle-10 {
+  background: #ffffff;
+  border-style: solid;
+  border-color: #000000;
+  border-width: 1px;
+  width: 139px;
+  height: 31px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+.dinner {
+  color: #000000;
+  text-align: left;
+  font-family: "KiteOne-Regular", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  position: absolute;
+  left: 37px;
+  top: 4px;
+  width: 65px;
+}
+.title-meal {
+  width: 82px;
+  height: 31px;
+  position: absolute;
+  left: 259px;
+  top: 604px;
+}
+.rectangle-11 {
+  background: #ffffff;
+  border-style: solid;
+  border-color: #000000;
+  border-width: 1px;
+  width: 73px;
+  height: 31px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+.meal {
+  color: #000000;
+  text-align: left;
+  font-family: "KiteOne-Regular", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  position: absolute;
+  left: 17px;
+  top: 4px;
+  width: 65px;
+}
+.title {
+  width: 423px;
+  height: 238px;
+  position: absolute;
+  left: 3px;
+  top: 383px;
+}
+.titile-union-1 {
+  width: 428px;
+  height: 245px;
+  position: absolute;
+  left: -25px;
+  top: 0px;
+  object-fit: cover;
+  aspect-ratio: 428/245;
+}

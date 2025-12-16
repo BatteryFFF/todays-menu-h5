@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- 字体：Kite One -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Kite+One&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- 通用样式（可留可删，不影响这页） -->
+    <link rel="stylesheet" href="./vars.css" />
+    <link rel="stylesheet" href="./style.css" />
+
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+
+      button,
+      input,
+      select {
+        border: none;
+        background: none;
+        font: inherit;
+      }
+
+      menu,
+      ol,
+      ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        background: #999;
+      }
+
+      body {
+        font-family: "Kite One", sans-serif;
+      }
+
+      /* 固定画布大小 */
+      .h5-wrapper {
+        width: 440px;
+        height: 956px;
+        margin: 0 auto;
+        position: relative;
+        overflow: hidden;
+        background: #fff8e5;
+        transform-origin: top center;
+      }
+
+      /* 小屏幕整体缩放 */
+      @media screen and (max-width: 440px) {
+        .h5-wrapper {
+          transform: scale(calc(100vw / 440));
+        }
+      }
+
+      .beef-menu,
+      .beef-menu * {
+        box-sizing: border-box;
+      }
+
+      .beef-menu {
+        background: #ffe173;
+        height: 956px;
+        width: 440px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .item-5 {
+        width: 122px;
+        height: 36px;
+        position: absolute;
+        left: 220px;
+        top: 746px;
+      }
+      .item-5-1 {
+        width: 122px;
+        height: 36px;
+        position: absolute;
+        left: 0px;
+        top: 1px;
+        object-fit: cover;
+        aspect-ratio: 122/36;
+      }
+
+      .item-6 {
+        width: 122px;
+        height: 36px;
+        position: absolute;
+        left: 47px;
+        top: 815px;
+      }
+      .item-62 {
+        width: 122px;
+        height: 36px;
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        object-fit: cover;
+        aspect-ratio: 122/36;
+      }
+
+      .item-4 {
+        width: 157px;
+        height: 40px;
+        position: absolute;
+        left: 72px;
+        top: 643px;
+      }
+      .item-42 {
+        width: 157px;
+        height: 40px;
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        object-fit: cover;
+        aspect-ratio: 157/40;
+      }
+
+      .item-3 {
+        width: 113px;
+        height: 36px;
+        position: absolute;
+        left: 189px;
+        top: 559px;
+      }
+      .item-32 {
+        width: 113px;
+        height: 36px;
+        position: absolute;
+        left: -9px;
+        top: 0px;
+        object-fit: cover;
+        aspect-ratio: 113/36;
+      }
+
+      .item-2 {
+        width: 113px;
+        height: 36px;
+        position: absolute;
+        left: 266px;
+        top: 475px;
+      }
+      .item-22 {
+        width: 113px;
+        height: 36px;
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        object-fit: cover;
+        aspect-ratio: 113/36;
+      }
+
+      .item-1 {
+        width: 113px;
+        height: 36px;
+        position: absolute;
+        left: 118px;
+        top: 393px;
+      }
+      .item-12 {
+        width: 113px;
+        height: 36px;
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        object-fit: cover;
+        aspect-ratio: 113/36;
+      }
+
+      .title-beef {
+        width: 342.03px;
+        height: 275.03px;
+        position: absolute;
+        left: 35px;
+        top: 123px;
+      }
+      .beef-2 {
+        width: 393px;
+        height: 292px;
+        position: absolute;
+        left: 11px;
+        top: -83px;
+        object-fit: cover;
+        aspect-ratio: 393/292;
+      }
+      .title-beef-1 {
+        width: 102.33%;
+        height: 278px;
+        position: absolute;
+        right: -2.33%;
+        left: 0%;
+        top: -12px;
+        object-fit: cover;
+        aspect-ratio: 350/278;
+      }
+
+      .grass {
+        width: 382.69px;
+        height: 672.22px;
+        position: absolute;
+        left: 43px;
+        top: 279px;
+
+        /* ✅ 草左右摇晃：风吹 */
+        transform-origin: 20% 40%;
+        animation: grassSway 4.6s ease-in-out infinite;
+        will-change: transform;
+      }
+
+      @keyframes grassSway {
+        0% {
+          transform: rotate(-1.2deg) translateX(-1px);
+        }
+        25% {
+          transform: rotate(1.6deg) translateX(2px);
+        }
+        50% {
+          transform: rotate(-0.8deg) translateX(-2px);
+        }
+        75% {
+          transform: rotate(1.1deg) translateX(1px);
+        }
+        100% {
+          transform: rotate(-1.2deg) translateX(-1px);
+        }
+      }
+
+      .grass-1 {
+        width: 383px;
+        height: 673px;
+        position: absolute;
+        left: -1px;
+        top: 0px;
+        object-fit: cover;
+        aspect-ratio: 383/673;
+      }
+
+      .button-next {
+        width: 93px;
+        height: 48px;
+        position: absolute;
+        left: 308px;
+        top: 859px;
+        z-index: 20;
+      }
+      .button-next-1 {
+        width: 93px;
+        height: 48px;
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        object-fit: cover;
+        aspect-ratio: 93/48;
+      }
+
+      /* =========================
+         ✅ 交互：统一“抬起 + 阴影”
+         ========================= */
+
+      .tag {
+        cursor: pointer;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+        transition: transform 120ms ease, filter 120ms ease;
+        will-change: transform, filter;
+        z-index: 50;
+        pointer-events: auto;
+      }
+
+      /* img 不抢事件 */
+      .tag img {
+        pointer-events: none;
+      }
+
+      /* ✅ 选中：抬起 + 阴影（抬得更明显） */
+      .tag.selected {
+        transform: translateY(-2px);
+        filter: drop-shadow(0 2px 0 rgba(168, 167, 167, 0.35));
+      }
+
+      /* ✅ 未选中按下：下压 */
+      .tag:not(.selected):active {
+        transform: translateY(1px);
+        filter: drop-shadow(0 0px 0 rgba(173, 171, 171, 0.22));
+      }
+
+      /* ✅ 已选中按下：轻微回落 */
+      .tag.selected:active {
+        transform: translateY(-1px);
+        filter: drop-shadow(0 2px 0 rgba(0, 0, 0, 0.28));
+      }
+
+      /* ✅ 装饰图层不吃点击 */
+      .title-beef,
+      .title-beef *,
+      .grass,
+      .grass *,
+      .beef-2,
+      .title-beef-1,
+      .grass-1 {
+        pointer-events: none;
+      }
+
+      .beef-menu > img,
+      .beef-menu .background,
+      .beef-menu .decor {
+        pointer-events: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="h5-wrapper">
+      <div class="beef-menu">
+        <!-- ✅ 每个菜：class="tag" + data-value="菜名"  -->
+        <div class="item-5 tag" data-value="咖喱辣牛骨">
+          <img class="item-5-1" src="images_2/item5.png" alt="咖喱辣牛骨" />
+        </div>
+
+        <div class="item-6 tag" data-value="芹菜炒牛肉">
+          <img class="item-62" src="images_2/item6.png" alt="芹菜炒牛肉" />
+        </div>
+
+        <div class="item-4 tag" data-value="西红柿炖牛蹄筋">
+          <img class="item-42" src="images_2/item4.png" alt="西红柿炖牛蹄筋" />
+        </div>
+
+        <div class="item-3 tag" data-value="泡椒牛肉">
+          <img class="item-32" src="images_2/item3.png" alt="泡椒牛肉" />
+        </div>
+
+        <div class="item-2 tag" data-value="酸汤肥牛">
+          <img class="item-22" src="images_2/item2.png" alt="酸汤肥牛" />
+        </div>
+
+        <div class="item-1 tag" data-value="小炒黄牛肉">
+          <img class="item-12" src="images_2/item1.png" alt="小炒黄牛肉" />
+        </div>
+
+        <div class="title-beef">
+          <img class="beef-2" src="images_2/beef.png" alt="beef" />
+          <img class="title-beef-1" src="images_2/title-beef.png" alt="title" />
+        </div>
+
+        <div class="grass">
+          <img class="grass-1" src="images_2/grass.png" alt="grass" />
+        </div>
+
+        <!-- ✅ next：也用 tag，让它“抬起+阴影” -->
+        <a href="pork.html" class="button-next tag" data-value="__next__">
+          <img
+            class="button-next-1"
+            src="images_2/button-next.png"
+            alt="next"
+          />
+        </a>
+      </div>
+    </div>
+
+    <script>
+      const PAGE_KEY = "todaymenu_beef";
+
+      /** 👉 用数组存多个选项 */
+      let selectedItems = [];
+
+      /* ---------- 页面加载：恢复历史选择 ---------- */
+      const saved = localStorage.getItem(PAGE_KEY);
+      if (saved) {
+        try {
+          selectedItems = JSON.parse(saved);
+        } catch {
+          selectedItems = [];
+        }
+
+        document.querySelectorAll(".tag").forEach((tag) => {
+          // next 按钮不参与选中
+          if (tag.dataset.value === "__next__") return;
+
+          if (selectedItems.includes(tag.dataset.value)) {
+            tag.classList.add("selected");
+          }
+        });
+      }
+
+      /* ---------- 点击菜品：切换选中 ---------- */
+      document.querySelectorAll(".tag").forEach((tag) => {
+        // next 按钮不参与选中逻辑
+        if (tag.dataset.value === "__next__") return;
+
+        tag.addEventListener("click", () => {
+          const val = tag.dataset.value;
+
+          if (selectedItems.includes(val)) {
+            selectedItems = selectedItems.filter((v) => v !== val);
+            tag.classList.remove("selected");
+          } else {
+            selectedItems.push(val);
+            tag.classList.add("selected");
+          }
+
+          localStorage.setItem(PAGE_KEY, JSON.stringify(selectedItems));
+        });
+      });
+    </script>
+  </body>
+</html>

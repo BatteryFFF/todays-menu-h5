@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- 字体，可选 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Kite+One&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* 全局 reset & 居中画布 */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      body {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        background: #000;
+        font-family: "Kite One", sans-serif;
+      }
+
+      /* ======= SEAFOOD PAGE ======= */
+      .seafood-menu,
+      .seafood-menu * {
+        box-sizing: border-box;
+      }
+
+      .seafood-menu {
+        background: #ffe5ec;
+        height: 956px;
+        width: 440px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* NEXT 按钮 */
+      .seafood-menu .button-next {
+        width: 93px;
+        height: 48px;
+        position: absolute;
+        left: 308px;
+        top: 859px;
+        z-index: 50;
+      }
+
+      .seafood-menu .button-next-1 {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        object-fit: cover;
+        aspect-ratio: 93 / 48;
+      }
+
+      /* 公共：标签图片填满各自 frame */
+      .frame-label {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: contain;
+        pointer-events: none; /* ✅ 让点击落在外层 tag 上 */
+      }
+
+      /* 所有 frame 去掉背景和边框，只保留位置/尺寸 */
+      .frame-25,
+      .frame-21,
+      .frame-22,
+      .frame-23,
+      .frame-24,
+      .frame-10,
+      .frame-18,
+      .frame-19,
+      .frame-20,
+      .frame-6 {
+        background: transparent;
+        border: none;
+        overflow: visible;
+        position: absolute;
+      }
+
+      .frame-25 {
+        width: 92px;
+        height: 37px;
+        left: calc(50% - 163px);
+        top: calc(50% - -351px);
+      }
+      .frame-21 {
+        width: 92px;
+        height: 37px;
+        left: calc(50% - 162px);
+        top: calc(50% - 251px);
+      }
+      .frame-22 {
+        width: 113px;
+        height: 40px;
+        left: calc(50% - 141px);
+        top: calc(50% - -168px);
+      }
+      .frame-23 {
+        width: 113px;
+        height: 40px;
+        left: calc(50% - 178px);
+        top: calc(50% - -229px);
+      }
+      .frame-24 {
+        width: 113px;
+        height: 40px;
+        left: calc(50% - 138px);
+        top: calc(50% - -290px);
+      }
+      .frame-10 {
+        width: 113px;
+        height: 40px;
+        left: calc(50% - -56px);
+        top: calc(50% - 137px);
+      }
+      .frame-18 {
+        width: 97px;
+        height: 40px;
+        left: calc(50% - -63px);
+        top: calc(50% - 212px);
+      }
+      .frame-19 {
+        width: 97px;
+        height: 40px;
+        left: calc(50% - -56px);
+        top: calc(50% - -33px);
+      }
+      .frame-20 {
+        width: 97px;
+        height: 40px;
+        left: calc(50% - -84px);
+        top: calc(50% - 52px);
+      }
+      .frame-6 {
+        width: 141px;
+        height: 40px;
+        left: calc(50% - 166px);
+        top: calc(50% - 177px);
+      }
+
+      /* ✅ 交互：可点菜项（不影响定位） */
+      .tag {
+        cursor: pointer;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+        z-index: 40; /* ✅ 比泡泡更高 */
+        transition: transform 120ms ease, filter 120ms ease;
+      }
+
+      /* ✅ 选中态：停留 */
+      .tag.selected {
+        transform: translateY(-2px);
+        filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.32));
+      }
+
+      .tag:not(.selected):active {
+        transform: translateY(1px);
+        filter: drop-shadow(0 0px 0 rgba(173, 171, 171, 0.22));
+      }
+
+      .tag.selected:active {
+        transform: translateY(-1px);
+        filter: drop-shadow(0 2px 0 rgba(0, 0, 0, 0.28));
+      }
+
+      /* 泡泡样式 + 动画（✅ 不吃点击 + 在底层） */
+      .ellipse-51,
+      .ellipse-52,
+      .ellipse-53,
+      .ellipse-54,
+      .ellipse-55 {
+        background: radial-gradient(
+          closest-side,
+          rgba(217, 217, 217, 0) 0%,
+          rgba(222, 247, 255, 1) 100%
+        );
+        border-radius: 50%;
+        position: absolute;
+        animation: bubbleFloat 5s ease-in-out infinite;
+        pointer-events: none; /* ✅ 关键：永远点得到标签 */
+        z-index: 1; /* ✅ 放底层 */
+      }
+
+      .ellipse-55 {
+        width: 142px;
+        height: 142px;
+        left: -38px;
+        top: 694px;
+        animation-duration: 6s;
+        animation-delay: 0.2s;
+      }
+      .ellipse-51 {
+        width: 172px;
+        height: 172px;
+        left: 283px;
+        top: 69px;
+        animation-duration: 7s;
+        animation-delay: 0.8s;
+      }
+      .ellipse-52 {
+        width: 46px;
+        height: 46px;
+        left: 161px;
+        top: 260px;
+        animation-duration: 4.5s;
+        animation-delay: 0.4s;
+      }
+      .ellipse-53 {
+        width: 46px;
+        height: 46px;
+        left: 195px;
+        top: 813px;
+        animation-duration: 5.5s;
+        animation-delay: 1s;
+      }
+      .ellipse-54 {
+        width: 80px;
+        height: 80px;
+        left: 228px;
+        top: 538px;
+        animation-duration: 6.5s;
+        animation-delay: 0.6s;
+      }
+
+      @keyframes bubbleFloat {
+        0% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-50px);
+        }
+        100% {
+          transform: translateY(0);
+        }
+      }
+
+      /* 其他图片：虾、鱼、标题（在标签下层 or 上层都行，你现在放下层更安全） */
+      .shrimp-2 {
+        width: 464px;
+        height: 325px;
+        position: absolute;
+        left: -107px;
+        top: 331px;
+        object-fit: cover;
+        aspect-ratio: 464 / 325;
+        z-index: 2;
+        pointer-events: none;
+      }
+
+      .fish-2 {
+        width: 354px;
+        height: 248px;
+        position: absolute;
+        left: 161px;
+        top: 611px;
+        object-fit: cover;
+        aspect-ratio: 354 / 248;
+        z-index: 2;
+        pointer-events: none;
+      }
+
+      .seafood-title-1 {
+        width: 338px;
+        height: 147.5px;
+        position: absolute;
+        left: 42px;
+        top: 34px;
+        object-fit: cover;
+        aspect-ratio: 338 / 147.5;
+        z-index: 2;
+        pointer-events: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="seafood-menu">
+      <!-- NEXT -->
+      <a href="vegetables.html" class="button-next">
+        <img class="button-next-1" src="images_2/button-next.png" alt="Next" />
+      </a>
+
+      <!-- ✅ 标签：加 tag + data-value -->
+      <div class="frame-25 tag" data-value="清蒸鱼">
+        <img class="frame-label" src="images_5/Frame 25.svg" alt="清蒸鱼" />
+      </div>
+
+      <div class="frame-21 tag" data-value="啤酒鸭">
+        <img class="frame-label" src="images_5/Frame 21.svg" alt="啤酒鸭" />
+      </div>
+
+      <div class="frame-22 tag" data-value="麻辣水煮鱼">
+        <img class="frame-label" src="images_5/Frame 22.svg" alt="麻辣水煮鱼" />
+      </div>
+
+      <div class="frame-23 tag" data-value="藤椒水煮鱼">
+        <img class="frame-label" src="images_5/Frame 23.svg" alt="藤椒水煮鱼" />
+      </div>
+
+      <div class="frame-24 tag" data-value="酸菜水煮鱼">
+        <img class="frame-label" src="images_5/Frame 24.svg" alt="酸菜水煮鱼" />
+      </div>
+
+      <div class="frame-10 tag" data-value="香辣鱿鱼丝">
+        <img class="frame-label" src="images_5/Frame 10.svg" alt="香辣鱿鱼丝" />
+      </div>
+
+      <div class="frame-18 tag" data-value="爆炒蛤蜊">
+        <img class="frame-label" src="images_5/Frame 18.svg" alt="爆炒蛤蜊" />
+      </div>
+
+      <div class="frame-19 tag" data-value="油焖大虾">
+        <img class="frame-label" src="images_5/Frame 19.svg" alt="油焖大虾" />
+      </div>
+
+      <div class="frame-20 tag" data-value="油爆河虾">
+        <img class="frame-label" src="images_5/Frame 20.svg" alt="油爆河虾" />
+      </div>
+
+      <div class="frame-6 tag" data-value="酸萝卜老鸭汤">
+        <img
+          class="frame-label"
+          src="images_5/Frame 6.svg"
+          alt="酸萝卜老鸭汤"
+        />
+      </div>
+
+      <!-- 泡泡（不吃点击） -->
+      <div class="ellipse-55"></div>
+      <div class="ellipse-51"></div>
+      <div class="ellipse-52"></div>
+      <div class="ellipse-53"></div>
+      <div class="ellipse-54"></div>
+
+      <!-- 插画 -->
+      <img class="shrimp-2" src="images_5/shrimp.png" alt="Shrimp" />
+      <img class="fish-2" src="images_5/fish.png" alt="Fish" />
+      <img
+        class="seafood-title-1"
+        src="images_5/seafood-title.png"
+        alt="Seafood Title"
+      />
+    </div>
+
+    <script>
+      // ✅ 本页多选存储 key
+      const PAGE_KEY = "todaymenu_seafood";
+      // ✅ 全局选择顺序（用于最后一页按顺序浮现）
+      const ORDER_KEY = "todaymenu_order";
+
+      function readJson(key, fallback) {
+        try {
+          const v = localStorage.getItem(key);
+          return v ? JSON.parse(v) : fallback;
+        } catch (e) {
+          return fallback;
+        }
+      }
+
+      function writeJson(key, value) {
+        localStorage.setItem(key, JSON.stringify(value));
+      }
+
+      // 1) 恢复本页已选
+      const savedList = readJson(PAGE_KEY, []);
+      const savedSet = new Set(savedList);
+
+      document.querySelectorAll(".tag").forEach((tag) => {
+        const val = tag.dataset.value;
+        if (savedSet.has(val)) tag.classList.add("selected");
+      });
+
+      // 2) 点击切换：多选 + 记录顺序
+      document.querySelectorAll(".tag").forEach((tag) => {
+        tag.addEventListener("click", () => {
+          const val = tag.dataset.value;
+
+          const list = readJson(PAGE_KEY, []);
+          const set = new Set(list);
+          const order = readJson(ORDER_KEY, []);
+
+          const willSelect = !tag.classList.contains("selected");
+
+          if (willSelect) {
+            tag.classList.add("selected");
+            set.add(val);
+
+            if (!order.includes(val)) {
+              order.push(val);
+              writeJson(ORDER_KEY, order);
+            }
+          } else {
+            tag.classList.remove("selected");
+            set.delete(val);
+
+            // 从全局顺序里移除（避免最后页出现已取消的）
+            writeJson(
+              ORDER_KEY,
+              order.filter((x) => x !== val)
+            );
+          }
+
+          writeJson(PAGE_KEY, Array.from(set));
+
+          // 🔧 调试：你打开浏览器控制台就能看到
+          console.log("click:", val, "selected:", willSelect);
+          console.log("PAGE_KEY:", readJson(PAGE_KEY, []));
+          console.log("ORDER_KEY:", readJson(ORDER_KEY, []));
+        });
+      });
+    </script>
+  </body>
+</html>

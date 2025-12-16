@@ -1,0 +1,20 @@
+<svg width="421" height="421" viewBox="0 0 421 421" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="eggs_inner" data-figma-trr="r10u5-0f">
+<ellipse cx="210.5" cy="36.2923" rx="24.6716" ry="34.8415" fill="url(#paint0_linear_10_526)"/>
+</g>
+<use xlink:href="#eggs_inner" transform="translate(163.931 -83.5269) rotate(36)"/>
+<use xlink:href="#eggs_inner" transform="translate(345.649 -54.7454) rotate(72)"/>
+<use xlink:href="#eggs_inner" transform="translate(475.745 75.3507) rotate(108)"/>
+<use xlink:href="#eggs_inner" transform="translate(504.527 257.069) rotate(144)"/>
+<use xlink:href="#eggs_inner" transform="translate(421 421) rotate(-180)"/>
+<use xlink:href="#eggs_inner" transform="translate(257.069 504.527) rotate(-144)"/>
+<use xlink:href="#eggs_inner" transform="translate(75.3507 475.745) rotate(-108)"/>
+<use xlink:href="#eggs_inner" transform="translate(-54.7455 345.649) rotate(-72)"/>
+<use xlink:href="#eggs_inner" transform="translate(-83.5269 163.931) rotate(-36)"/>
+<defs>
+<linearGradient id="paint0_linear_10_526" x1="210.5" y1="1.45081" x2="210.5" y2="71.1339" gradientUnits="userSpaceOnUse">
+<stop stop-color="#F7DEC0"/>
+<stop offset="1" stop-color="#E9D1B4"/>
+</linearGradient>
+</defs>
+</svg>

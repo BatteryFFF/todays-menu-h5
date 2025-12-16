@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <style>
+      /* ===== reset + 居中画布 ===== */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+
+      body {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        background: #000;
+      }
+
+      /* ===== page container ===== */
+      .vegetables,
+      .vegetables * {
+        box-sizing: border-box;
+      }
+
+      .vegetables {
+        background: #e6f5e0;
+        width: 440px;
+        height: 956px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* ===== 背景呼吸（不影响点击） ===== */
+      .vegetable-background {
+        width: 492px;
+        height: 792px;
+        position: absolute;
+        left: -158px;
+        top: 277.72px;
+        transform: translate(158px, -172.38px);
+        overflow: visible;
+
+        transform-origin: center;
+        animation: veggieBreath 7s ease-in-out infinite;
+
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      @keyframes veggieBreath {
+        0% {
+          transform: translate(158px, -172.38px) scale(1) translateY(0);
+        }
+        50% {
+          transform: translate(158px, -172.38px) scale(1.3) translateY(-6px);
+        }
+        100% {
+          transform: translate(158px, -172.38px) scale(1) translateY(0);
+        }
+      }
+
+      /* ===== 标签：纯定位容器（外层不做浮现 transform！！！） ===== */
+      .frame-22,
+      .frame-28,
+      .frame-23,
+      .frame-24,
+      .frame-31,
+      .frame-18,
+      .frame-20,
+      .frame-26,
+      .frame-27,
+      .frame-29,
+      .frame-30,
+      .frame-6 {
+        background: transparent;
+        border: none;
+        overflow: visible;
+        position: absolute;
+        z-index: 20; /* ✅ 在背景上面，可点 */
+
+        /* ✅ 外层只留 opacity 动画（不动 transform） */
+        opacity: 0;
+        animation: wrapperIn 0.01s linear forwards;
+      }
+
+      /* 外层只负责“出现”，不碰 transform，避免压掉 .tag.selected 的抬起 */
+      @keyframes wrapperIn {
+        to {
+          opacity: 1;
+        }
+      }
+
+      /* ✅ 浮现动画放到图片上（这里可以用 transform，不会影响外层抬起） */
+      .label-svg {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: contain;
+        pointer-events: none;
+
+        opacity: 0;
+        transform: translateY(10px);
+        animation: labelIn 0.65s ease-out forwards;
+      }
+
+      @keyframes labelIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* ✅ 交互：可点菜项（不影响定位） */
+      .tag {
+        cursor: pointer;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+
+        /* 建议加 transition，抬起/按压更顺滑 */
+        transition: transform 120ms ease, filter 120ms ease;
+      }
+
+      /* ✅ 按你上一页那套（原样） */
+      .tag.selected {
+        transform: translateY(-2px);
+        filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.32));
+      }
+
+      .tag:not(.selected):active {
+        transform: translateY(1px);
+        filter: drop-shadow(0 0px 0 rgba(173, 171, 171, 0.22));
+      }
+
+      .tag.selected:active {
+        transform: translateY(-1px);
+        filter: drop-shadow(0 2px 0 rgba(0, 0, 0, 0.28));
+      }
+
+      /* ===== 你原来的位置尺寸（原封不动 + stagger delay） ===== */
+      .frame-22 {
+        width: 113px;
+        height: 40px;
+        left: calc(50% - 174px);
+        top: calc(50% - -31px);
+        animation-delay: 0.2s;
+      }
+      .frame-22 .label-svg {
+        animation-delay: 0.2s;
+      }
+
+      .frame-28 {
+        width: 113px;
+        height: 40px;
+        left: calc(50% - 125px);
+        top: calc(50% - 76px);
+        animation-delay: 0.3s;
+      }
+      .frame-28 .label-svg {
+        animation-delay: 0.3s;
+      }
+
+      .frame-23 {
+        width: 113px;
+        height: 40px;
+        left: calc(50% - 12px);
+        top: calc(50% - -270px);
+        animation-delay: 0.4s;
+      }
+      .frame-23 .label-svg {
+        animation-delay: 0.4s;
+      }
+
+      .frame-24 {
+        width: 113px;
+        height: 40px;
+        left: calc(50% - 162px);
+        top: calc(50% - -167px);
+        animation-delay: 0.5s;
+      }
+      .frame-24 .label-svg {
+        animation-delay: 0.5s;
+      }
+
+      .frame-31 {
+        width: 113px;
+        height: 40px;
+        left: calc(50% - -88px);
+        top: calc(50% - -188px);
+        animation-delay: 0.6s;
+      }
+      .frame-31 .label-svg {
+        animation-delay: 0.6s;
+      }
+
+      .frame-18 {
+        width: 97px;
+        height: 40px;
+        left: calc(50% - 145px);
+        top: calc(50% - -341px);
+        animation-delay: 0.7s;
+      }
+      .frame-18 .label-svg {
+        animation-delay: 0.7s;
+      }
+
+      .frame-20 {
+        width: 97px;
+        height: 40px;
+        left: calc(50% - 192px);
+        top: calc(50% - 197px);
+        animation-delay: 0.8s;
+      }
+      .frame-20 .label-svg {
+        animation-delay: 0.8s;
+      }
+
+      .frame-26 {
+        width: 97px;
+        height: 40px;
+        left: calc(50% - 4px);
+        top: calc(50% - 145px);
+        animation-delay: 0.9s;
+      }
+      .frame-26 .label-svg {
+        animation-delay: 0.9s;
+      }
+
+      .frame-27 {
+        width: 97px;
+        height: 40px;
+        left: calc(50% - -26px);
+        top: calc(50% - 245px);
+        animation-delay: 1s;
+      }
+      .frame-27 .label-svg {
+        animation-delay: 1s;
+      }
+
+      .frame-29 {
+        width: 97px;
+        height: 40px;
+        left: calc(50% - -55px);
+        top: calc(50% - 24px);
+        animation-delay: 1.1s;
+      }
+      .frame-29 .label-svg {
+        animation-delay: 1.1s;
+      }
+
+      .frame-30 {
+        width: 97px;
+        height: 40px;
+        left: calc(50% - 4px);
+        top: calc(50% - -92px);
+        animation-delay: 1.2s;
+      }
+      .frame-30 .label-svg {
+        animation-delay: 1.2s;
+      }
+
+      .frame-6 {
+        width: 139px;
+        height: 40px;
+        left: calc(50% - 175px);
+        top: calc(50% - 298px);
+        animation-delay: 0.25s;
+      }
+      .frame-6 .label-svg {
+        animation-delay: 0.25s;
+      }
+
+      /* ===== next & title ===== */
+      .button-next {
+        width: 93px;
+        height: 48px;
+        position: absolute;
+        left: 308px;
+        top: 859px;
+        z-index: 50;
+      }
+
+      .button-next-1 {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        object-fit: cover;
+        aspect-ratio: 93 / 48;
+      }
+
+      .title {
+        width: 440px;
+        height: 203.5px;
+        position: absolute;
+        left: 0px;
+        top: 1px;
+        object-fit: cover;
+        aspect-ratio: 440 / 203.5;
+        z-index: 5;
+        pointer-events: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="vegetables">
+      <!-- 背景 -->
+      <img
+        class="vegetable-background"
+        src="images_6/vegetable background.svg"
+        alt="vegetable bg"
+      />
+
+      <!-- ✅ 标签：加 tag + data-value -->
+      <div class="frame-22 tag" data-value="酸辣土豆丝">
+        <img class="label-svg" src="images_6/Frame 22.svg" alt="酸辣土豆丝" />
+      </div>
+
+      <div class="frame-28 tag" data-value="茄子烧豆角">
+        <img class="label-svg" src="images_6/Frame 28.svg" alt="茄子烧豆角" />
+      </div>
+
+      <div class="frame-23 tag" data-value="凉拌豆腐丝">
+        <img class="label-svg" src="images_6/Frame 23.svg" alt="凉拌豆腐丝" />
+      </div>
+
+      <div class="frame-24 tag" data-value="凉拌海带丝">
+        <img class="label-svg" src="images_6/Frame 24.svg" alt="凉拌海带丝" />
+      </div>
+
+      <div class="frame-31 tag" data-value="菠菜拌木耳">
+        <img class="label-svg" src="images_6/Frame 31.svg" alt="菠菜拌木耳" />
+      </div>
+
+      <div class="frame-18 tag" data-value="麻婆豆腐">
+        <img class="label-svg" src="images_6/Frame 18.svg" alt="麻婆豆腐" />
+      </div>
+
+      <div class="frame-20 tag" data-value="蚝油生菜">
+        <img class="label-svg" src="images_6/Frame 20.svg" alt="蚝油生菜" />
+      </div>
+
+      <div class="frame-26 tag" data-value="酸辣包菜">
+        <img class="label-svg" src="images_6/Frame 26.svg" alt="酸辣包菜" />
+      </div>
+
+      <div class="frame-27 tag" data-value="手撕包菜">
+        <img class="label-svg" src="images_6/Frame 27.svg" alt="手撕包菜" />
+      </div>
+
+      <div class="frame-29 tag" data-value="三味茄子">
+        <img class="label-svg" src="images_6/Frame 29.svg" alt="三味茄子" />
+      </div>
+
+      <div class="frame-30 tag" data-value="豌豆肉末">
+        <img class="label-svg" src="images_6/Frame 30.svg" alt="豌豆肉末" />
+      </div>
+
+      <div class="frame-6 tag" data-value="蒜蓉炒蔬菜">
+        <img class="label-svg" src="images_6/Frame 6.svg" alt="蒜蓉炒蔬菜" />
+      </div>
+
+      <!-- next -->
+      <a href="soup.html" class="button-next">
+        <img class="button-next-1" src="images_2/button-next.png" alt="Next" />
+      </a>
+
+      <!-- title -->
+      <img class="title" src="images_6/title.png" alt="Vegetables title" />
+    </div>
+
+    <script>
+      const PAGE_KEY = "todaymenu_vegetables";
+      const ORDER_KEY = "todaymenu_order";
+
+      function readJson(key, fallback) {
+        try {
+          const v = localStorage.getItem(key);
+          return v ? JSON.parse(v) : fallback;
+        } catch (e) {
+          return fallback;
+        }
+      }
+      function writeJson(key, value) {
+        localStorage.setItem(key, JSON.stringify(value));
+      }
+
+      // 恢复本页已选
+      const savedList = readJson(PAGE_KEY, []);
+      const savedSet = new Set(savedList);
+
+      document.querySelectorAll(".tag").forEach((tag) => {
+        const val = tag.dataset.value;
+        if (savedSet.has(val)) tag.classList.add("selected");
+      });
+
+      // 点击切换：多选 + 记录顺序
+      document.querySelectorAll(".tag").forEach((tag) => {
+        tag.addEventListener("click", () => {
+          const val = tag.dataset.value;
+
+          const list = readJson(PAGE_KEY, []);
+          const set = new Set(list);
+          const order = readJson(ORDER_KEY, []);
+
+          if (tag.classList.contains("selected")) {
+            tag.classList.remove("selected");
+            set.delete(val);
+            writeJson(PAGE_KEY, Array.from(set));
+            writeJson(
+              ORDER_KEY,
+              order.filter((x) => x !== val)
+            );
+          } else {
+            tag.classList.add("selected");
+            set.add(val);
+            writeJson(PAGE_KEY, Array.from(set));
+
+            if (!order.includes(val)) {
+              order.push(val);
+              writeJson(ORDER_KEY, order);
+            }
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
